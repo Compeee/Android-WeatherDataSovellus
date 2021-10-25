@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="forecast">Forecast</string>
+    <string name="update">Update</string>
+    <string name="imperial">Imperial</string>
+    <string name="metric">Metric</string>
+    <string name="tampere">Tampere</string>
+    <string name="_6c">6°C</string>
+    <string name="clouds">Clouds</string>
+    <string name="_2_m_s">2 m/s</string>
+    <string name="enter_a_city">Enter a city</string>
+</resources>

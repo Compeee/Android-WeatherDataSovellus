@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="forecast">Ennuste</string>
+    <string name="update">Päivitä</string>
+    <string name="tampere">Tampere</string>
+    <string name="_6c">6°C</string>
+    <string name="clouds">Pilvistä</string>
+    <string name="_2_m_s">2 m/s</string>
+    <string name="enter_a_city">Syötä kaupunki</string>
+    <string name="imperial">Imperiaali</string>
+    <string name="metric">Metrijärjestelmä</string>
+</resources>
