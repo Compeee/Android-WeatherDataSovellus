@@ -53,7 +53,12 @@ public class ForecastActivity extends AppCompatActivity {
                 JSONObject weatherItem = forecastList.getJSONObject(i);
                 weatherForecastItemString = weatherItem.getJSONArray("weather").getJSONObject(0).getString("main");
                 float temperature = (float) weatherItem.getJSONObject("main").getDouble("temp");
-                weatherForecastItemString += " " + temperature + " C";
+                if (unit.equals("metric")) {
+                    weatherForecastItemString += " " + temperature + " °C";
+                } else {
+                    weatherForecastItemString += " " + temperature + " °F";
+                }
+
                 TextView forecastListTextView = findViewById(R.id.weatherForecastListTextView);
                 forecastListTextView.append(weatherForecastItemString + "\n\n");
             }

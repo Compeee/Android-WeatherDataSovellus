@@ -4,9 +4,7 @@
     <string name="update">Update</string>
     <string name="imperial">Imperial</string>
     <string name="metric">Metric</string>
-    <string name="tampere">Tampere</string>
-    <string name="_6c">6°C</string>
-    <string name="clouds">Clouds</string>
-    <string name="_2_m_s">2 m/s</string>
+    <string name="cityNameAndGuide">Enter a city and press update!</string>
     <string name="enter_a_city">Enter a city</string>
+    <string name="errorMsg">Failed to get data!</string>
 </resources>

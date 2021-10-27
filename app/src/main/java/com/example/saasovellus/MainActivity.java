@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,31 +28,23 @@ public class MainActivity extends AppCompatActivity {
     private String weatherDesc;
     private String city;
     private String unit = "metric";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView temperatureTextView = findViewById(R.id.tempTextView);
         TextView descriptionTextView = findViewById(R.id.weatherDesc);
-        TextView windTextView = findViewById(R.id.windSpeedTextView);
         TextView cityTextView = findViewById(R.id.cityTextView);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             unit = savedInstanceState.getString("LOG_UNIT");
             city = savedInstanceState.getString("LOG_CITY");
             temperature = savedInstanceState.getFloat("LOG_TEMPERATURE");
             windSpeed = savedInstanceState.getFloat("LOG_WINDSPEED");
             weatherDesc = savedInstanceState.getString("LOG_DESC");
             cityTextView.setText(city);
-            if(unit.equals("metric")){
-                temperatureTextView.setText(temperature + " °C");
-                windTextView.setText(windSpeed + " m/s");
-            } else {
-                temperatureTextView.setText(temperature + " °F");
-                windTextView.setText(windSpeed + " mph");
-            }
+            setUnit(unit);
             descriptionTextView.setText(weatherDesc);
             setWeatherIcon(weatherDesc);
-
         }
         // Instantiate the RequestQueue
         queue = Volley.newRequestQueue(this);
@@ -95,19 +86,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
     // Gets weatherdata from openweathermap api
     public void getWeatherData(View view) {
         EditText cityEdit = findViewById(R.id.cityEditText);
         city = cityEdit.getText().toString();
         TextView cityText = findViewById(R.id.cityTextView);
         cityText.setText(city);
-        String url = "https://api.openweathermap.org/data/2.5/weather?q="+ city + "&units="+unit+"&appid=0b3dbb4aefe225ec3f1eb4113f674050";
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + unit + "&appid=0b3dbb4aefe225ec3f1eb4113f674050";
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // Web req ok, response here as a string
                     parseJsonAndUpdateUI(response);
                 }, error -> {
+            cityText.setText(R.string.errorMsg);
             // Error getting from web
         });
         // Add the request to the RequestQueue.
@@ -121,29 +114,24 @@ public class MainActivity extends AppCompatActivity {
             windSpeed = (float) mainObj.getJSONObject("wind").getDouble("speed");
             weatherDesc = mainObj.getJSONArray("weather").getJSONObject(0).getString("main");
             // Display data
-            TextView temperatureTextView = findViewById(R.id.tempTextView);
             TextView descriptionTextView = findViewById(R.id.weatherDesc);
             descriptionTextView.setText(weatherDesc);
-            TextView windTextView = findViewById(R.id.windSpeedTextView);
-            if(unit.equals("metric")){
-                temperatureTextView.setText(temperature + " °C");
-                windTextView.setText(windSpeed + " m/s");
-            } else {
-                temperatureTextView.setText(temperature + " °F");
-                windTextView.setText(windSpeed + " mph");
-            }
+            // Sets the right unit for data
+            setUnit(unit);
             // Select icon that matches description
             setWeatherIcon(weatherDesc);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     public void openForecast(View view) {
         Intent openForecast = new Intent(this, ForecastActivity.class);
         openForecast.putExtra("CITY_NAME_KEY", city);
         openForecast.putExtra("UNIT_KEY", unit);
         startActivity(openForecast);
     }
+
     public void setWeatherIcon(String desc) {
         ImageView weatherIcon = findViewById(R.id.weatherImageView);
         switch (desc) {
@@ -156,9 +144,24 @@ public class MainActivity extends AppCompatActivity {
             case "Rain":
                 weatherIcon.setImageResource(R.drawable.rainy_icon);
                 break;
+            case "Snow":
+                weatherIcon.setImageResource(R.drawable.snowy_icon);
+                break;
             default:
                 weatherIcon.setImageResource(R.drawable.fog_icon);
                 break;
+        }
+    }
+
+    public void setUnit(String unit) {
+        TextView temperatureTextView = findViewById(R.id.tempTextView);
+        TextView windTextView = findViewById(R.id.windSpeedTextView);
+        if (unit.equals("metric")) {
+            temperatureTextView.setText(temperature + " °C");
+            windTextView.setText(windSpeed + " m/s");
+        } else {
+            temperatureTextView.setText(temperature + " °F");
+            windTextView.setText(windSpeed + " mph");
         }
     }
 }
